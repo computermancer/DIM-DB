@@ -2,6 +2,7 @@
   "name": "dim-movement-dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/",
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
     "react": "^18.2.0",
