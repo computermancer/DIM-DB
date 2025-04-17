@@ -22,7 +22,7 @@ function Layout() {
           <div className="space-x-4">
             <Link to="/" className="text-white hover:text-orange-400">Home</Link>
             <Link to="/add" className="text-white hover:text-orange-400">Add Movement</Link>
-            <Link to="/archive-all" className="text-white hover:text-orange-400">View All Movements</Link>
+            <Link to="/archive-all" className="text-white hover:text-orange-400">Movement Archive</Link>
             <Link to="/library" className="text-white hover:text-orange-400">Movement Library</Link>
           </div>
         </div>
@@ -49,7 +49,7 @@ function Home() {
           className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-lg text-xl font-semibold text-center transition-colors" 
           to="/archive"
         >
-          View All Movements
+          Movement Archive
         </Link>
         <Link 
           className="bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-lg text-xl font-semibold text-center transition-colors" 

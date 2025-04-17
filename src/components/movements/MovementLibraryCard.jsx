@@ -9,7 +9,7 @@ export function MovementLibraryCard({ movement }) {
         to={`/archive?movement=${movement.id}`}
         className="block w-full bg-zinc-700 hover:bg-zinc-600 text-gray-300 px-4 py-2 rounded-lg transition-colors duration-200 text-center"
       >
-        View Archive
+        View Movement Details
       </Link>
     </div>
   );

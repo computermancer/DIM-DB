@@ -46,7 +46,7 @@ export function MovementLibrary() {
           onClick={() => navigate('/archive')}
           className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors duration-200"
         >
-          View Archive
+          View Movement Details
         </button>
       </div>
     );
@@ -60,7 +60,7 @@ export function MovementLibrary() {
           onClick={() => navigate('/archive')}
           className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors duration-200"
         >
-          View Archive
+          View Movement Details
         </button>
       </div>
 
