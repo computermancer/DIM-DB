@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchMovements, updateMovement, deleteMovementById } from '../utils/movementOperations';
 
-export const useMovementArchive = () => {
+export const useMovementArchiveAll = () => {
   const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -115,10 +115,7 @@ export const useMovementArchive = () => {
     try {
       setLoading(true);
       await deleteMovementById(movementToDelete.id);
-      
-      setMovements(movements.filter(d => d.id !== movementToDelete.id));
-      setMovementToDelete(null);
-      
+      await loadMovements();
       setToast({
         show: true,
         type: 'success',
@@ -140,7 +137,6 @@ export const useMovementArchive = () => {
     movements,
     loading,
     error,
-    setMovementToDelete,
     movementToDelete,
     editMode,
     editedMovement,
@@ -151,6 +147,7 @@ export const useMovementArchive = () => {
     handleFieldEdit,
     handleSaveEdit,
     deleteMovement,
-    confirmDelete
+    confirmDelete,
+    setMovementToDelete
   };
 };

@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Toast } from '../common/Toast';
 import MovementItem from './MovementItem';
 import ConfirmationModal from '../common/ConfirmationModal';
 import { DRILL_FIELDS } from '../../constants/movementFields';
-import { useMovementArchive } from '../../hooks/useMovementArchive';
+import { useMovementArchiveAll } from '../../hooks/useMovementArchiveAll';
 
-export function MovementArchive() {
+export function MovementArchiveAll() {
   const {
     movements,
     loading,
-    error,
     movementToDelete,
     editMode,
     editedMovement,
@@ -22,7 +21,7 @@ export function MovementArchive() {
     deleteMovement,
     confirmDelete,
     setMovementToDelete
-  } = useMovementArchive();
+  } = useMovementArchiveAll();
 
   const handleDelete = (id) => {
     deleteMovement(id);

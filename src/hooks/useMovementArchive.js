@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { fetchMovements, updateMovement, deleteMovementById } from '../utils/movementOperations';
 
 export const useMovementArchive = () => {
+  const [searchParams] = useSearchParams();
   const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -22,7 +24,15 @@ export const useMovementArchive = () => {
     try {
       setLoading(true);
       const data = await fetchMovements();
-      setMovements(data || []);
+      const movementId = searchParams.get('movement');
+      
+      if (movementId) {
+        // Filter to show only the selected movement
+        setMovements(data.filter(movement => movement.id === movementId) || []);
+      } else {
+        // Show all movements
+        setMovements(data || []);
+      }
     } catch (err) {
       setError(err.message);
       setToast({
@@ -115,10 +125,7 @@ export const useMovementArchive = () => {
     try {
       setLoading(true);
       await deleteMovementById(movementToDelete.id);
-      
-      setMovements(movements.filter(d => d.id !== movementToDelete.id));
-      setMovementToDelete(null);
-      
+      await loadMovements();
       setToast({
         show: true,
         type: 'success',
@@ -140,7 +147,6 @@ export const useMovementArchive = () => {
     movements,
     loading,
     error,
-    setMovementToDelete,
     movementToDelete,
     editMode,
     editedMovement,
@@ -151,6 +157,7 @@ export const useMovementArchive = () => {
     handleFieldEdit,
     handleSaveEdit,
     deleteMovement,
-    confirmDelete
+    confirmDelete,
+    setMovementToDelete
   };
 };
