@@ -4,7 +4,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import DIMDashboard from './components/DIM-Dashboard';
 import { MovementArchive } from './components/movements/MovementArchive';
-import { MovementLibrary } from './components/movements/MovementLibrary';
 import { MovementDetails } from './components/movements/MovementDetails';
 import { MovementCategories } from './components/MovementCategories';
 import { CaseStudies } from './components/CaseStudies';
@@ -66,7 +65,7 @@ export default function App() {
               <Link to="/" className="text-white hover:text-orange-400">Home</Link>
               <Link to="/add" className="text-white hover:text-orange-400">Add Movement</Link>
               <Link to="/archive" className="text-white hover:text-orange-400">Movement Archive</Link>
-              <Link to="/library" className="text-white hover:text-orange-400">Movement Library</Link>
+
             </div>
           </div>
         </nav>
@@ -76,7 +75,6 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/add" element={<DIMDashboard />} />
             <Route path="/archive" element={<MovementArchive />} />
-            <Route path="/library" element={<MovementLibrary />} />
             <Route path="/movement/:id" element={<MovementDetails />} />
             <Route path="/categories" element={<MovementCategories />} />
             <Route path="/case-studies" element={<CaseStudies />} />
