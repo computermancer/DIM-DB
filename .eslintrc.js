@@ -1,21 +1,30 @@
+// .eslintrc.js
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
+    es2021: true
   },
   extends: [
-    'plugin:react/recommended',
-    'standard'
+    'standard',
+    'plugin:react/recommended'
   ],
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 12,
+    ecmaVersion: 'latest',
     sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    }
   },
-  plugins: ['react'],
   rules: {
-    'react/react-in-jsx-scope': 'off'
+    semi: 'off',
+    'no-trailing-spaces': 'off',
+    'space-before-function-paren': 'off',
+    'multiline-ternary': 'off',
+    'react/prop-types': 'off'
   },
-};
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  }
+}

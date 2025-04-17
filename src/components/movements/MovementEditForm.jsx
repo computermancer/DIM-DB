@@ -2,7 +2,6 @@ import React from 'react';
 import { DRILL_FIELDS } from '../../constants/movementFields';
 
 export default function MovementEditForm({ movement, editedMovement, onFieldEdit }) {
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
       {DRILL_FIELDS.map(({ name, label }) => (

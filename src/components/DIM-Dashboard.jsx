@@ -56,24 +56,20 @@ const expandTextArea = (element, shouldExpand = true) => {
 };
 
 export default function DIMDashboard() {
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
-  const [toastType, setToastType] = useState('success');
   const [newMovement, setNewMovement] = useState(INITIAL_MOVEMENT);
   const [textBlock, setTextBlock] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastType, setToastType] = useState('success');
+  const successMessage = 'Movement added successfully';
   const navigate = useNavigate();
 
   const showErrorToast = (message) => {
-    setError(message);
-    setSuccessMessage(message);
     setToastType('error');
     setShowToast(true);
   };
 
   const showSuccessToast = (message) => {
-    setSuccessMessage(message);
     setToastType('success');
     setShowToast(true);
   };
@@ -102,11 +98,10 @@ export default function DIMDashboard() {
     
     try {
       setLoading(true);
-      setError(null);
       
       const cleanData = cleanMovementData(newMovement);
       
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('movements')
         .insert([cleanData])
         .select();
@@ -119,7 +114,7 @@ export default function DIMDashboard() {
       showSuccessToast('Movement added successfully');
       
       setTimeout(() => {
-        navigate('/library');
+        navigate('/movements');
       }, 1500);
     } catch (err) {
       showErrorToast('Failed to add movement: ' + (err.message || 'Unknown error'));
@@ -164,15 +159,6 @@ export default function DIMDashboard() {
     }
   };
 
-  const expandRef = (element, name) => {
-    if (element) {
-      const shouldExpand = ['purpose', 'instructions', 'notes'].includes(name);
-      if (shouldExpand) {
-        autoExpand(element);
-      }
-    }
-  };
-
   useEffect(() => {
     const textAreas = document.querySelectorAll('textarea');
     textAreas.forEach(textArea => {
@@ -189,7 +175,7 @@ export default function DIMDashboard() {
       <h2 className="text-2xl font-semibold text-orange-400 mb-8">Add New Movement</h2>
       
       <Toast 
-        message={successMessage} 
+        message={toastType === 'success' ? successMessage : 'Error occurred'}
         isVisible={showToast} 
         onClose={() => setShowToast(false)} 
         type={toastType} 
@@ -261,8 +247,6 @@ export default function DIMDashboard() {
                   />
                 </div>
               </div>
-
-
 
               <div className="bg-zinc-800 rounded-lg p-4 border border-white/10 hover:bg-zinc-700 transition-colors duration-200">
                 <label className="text-lg font-semibold mb-2 block">Purpose</label>

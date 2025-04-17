@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Toast } from '../common/Toast';
 import MovementItem from './MovementItem';
 import ConfirmationModal from '../common/ConfirmationModal';
@@ -9,7 +9,7 @@ export function MovementArchive() {
   const {
     movements,
     loading,
-    error,
+
     movementToDelete,
     editMode,
     editedMovement,

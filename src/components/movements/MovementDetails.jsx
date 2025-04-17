@@ -2,16 +2,10 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '../../config/supabase';
 import ReactPlayer from 'react-player';
-import { FaWindowClose } from 'react-icons/fa';
-import { FaTrash } from 'react-icons/fa';
-import { FaEdit } from 'react-icons/fa';
+import { FaWindowClose, FaTrash } from 'react-icons/fa';
 
 export function MovementDetails() {
   // Helper functions
-  const getBulletPoints = (content) => {
-    if (!content) return ['No content available'];
-    return content.split('.').map(item => item.trim()).filter(item => item);
-  };
 
   const getCommaSeparatedItems = (content) => {
     if (!content) return ['No content available'];
@@ -28,12 +22,67 @@ export function MovementDetails() {
   const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
   const [showEditModal, setShowEditModal] = React.useState(false);
   const [newVideoUrl, setNewVideoUrl] = React.useState('');
-  const [showVideo, setShowVideo] = React.useState(false);
+
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [editInformation, setEditInformation] = React.useState(false);
   const [editInstructions, setEditInstructions] = React.useState(false);
   const [editNotes, setEditNotes] = React.useState(false);
   const [editMechanics, setEditMechanics] = React.useState(false);
+
+  const [instructionsForm, setInstructionsForm] = React.useState({
+    setup: '',
+    instructions: '',
+    set: '',
+    reps: '',
+    tempo: '',
+    breath: '',
+    rest: '',
+    cues: '',
+    what_to_feel: '',
+    what_to_avoid: '',
+    red_flags: '',
+    equipment_requirements: ''
+  });
+
+  const [notesForm, setNotesForm] = React.useState({
+    coaching_notes: '',
+    technical_notes: ''
+  });
+
+  const [informationForm, setInformationForm] = React.useState({
+    purpose: '',
+    movement_type: '',
+    difficulty: '',
+    skill_demands: '',
+    influences: '',
+    execution_requirements: ''
+  });
+
+  const [mechanicsForm, setMechanicsForm] = React.useState({
+    joint_actions: '',
+    muscle_actions: '',
+    biomechanics: ''
+  });
+
+  const handleInstructionsChange = (e) => {
+    const { name, value } = e.target;
+    setInstructionsForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleNotesChange = (e) => {
+    const { name, value } = e.target;
+    setNotesForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleInformationChange = (e) => {
+    const { name, value } = e.target;
+    setInformationForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleMechanicsChange = (e) => {
+    const { name, value } = e.target;
+    setMechanicsForm(prev => ({ ...prev, [name]: value }));
+  };
 
   const contentSections = [
     {
@@ -684,54 +733,6 @@ export function MovementDetails() {
     }
   ];
 
-  const [instructionsForm, setInstructionsForm] = React.useState({
-    setup: '',
-    instructions: '',
-    set: '',
-    reps: '',
-    tempo: '',
-    breath: '',
-    rest: '',
-    cues: '',
-    what_to_feel: '',
-    what_to_avoid: '',
-    red_flags: '',
-    equipment_requirements: '',
-    equipment_alternatives: '',
-    regressions: '',
-    progressions: ''
-  });
-
-  const [informationForm, setInformationForm] = React.useState({
-    purpose: '',
-    movement_type: '',
-    difficulty: '',
-    skill_demands: '',
-    influences: '',
-    execution_requirements: ''
-  });
-
-  const [notesForm, setNotesForm] = React.useState({
-    notes: ''
-  });
-
-  const [mechanicsForm, setMechanicsForm] = React.useState({
-    mechanics: '',
-    mechanics_notes: '',
-    plane: '',
-    chain_type: '',
-    stance: '',
-    movement_types: '',
-    region: '',
-    joints: '',
-    joint_actions: '',
-    muscles: '',
-    tendons: '',
-    nervous_system: '',
-    psychological: '',
-    system_impact: ''
-  });
-
   // Initialize form state with current movement data
   React.useEffect(() => {
     if (movement) {
@@ -960,30 +961,6 @@ export function MovementDetails() {
     }
   };
 
-  // Handle information form change
-  const handleInformationChange = (e) => {
-    const { name, value } = e.target;
-    setInformationForm(prev => ({ ...prev, [name]: value }));
-  };
-
-  // Handle instructions form change
-  const handleInstructionsChange = (e) => {
-    const { name, value } = e.target;
-    setInstructionsForm(prev => ({ ...prev, [name]: value }));
-  };
-
-  // Handle notes form change
-  const handleNotesChange = (e) => {
-    const { name, value } = e.target;
-    setNotesForm(prev => ({ ...prev, [name]: value }));
-  };
-
-  // Handle mechanics form change
-  const handleMechanicsChange = (e) => {
-    const { name, value } = e.target;
-    setMechanicsForm(prev => ({ ...prev, [name]: value }));
-  };
-
   if (loading) {
     return (
       <div className="container mx-auto p-4">
@@ -1007,7 +984,7 @@ export function MovementDetails() {
     buttonSections[3], // Video
     buttonSections[2], // Instructions
     buttonSections[1], // Mechanics
-    buttonSections[4]  // Notes
+    buttonSections[4] // Notes
   ];
 
   const toggleSection = (sectionId) => {

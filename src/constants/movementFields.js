@@ -1,4 +1,5 @@
 export const DRILL_FIELDS = [
+  { name: 'movement_type', label: 'Movement Type' },
   { name: 'full_movement_block', label: 'Paste Full Movement Block' },
   { name: 'name', label: 'Name' },
   { name: 'simple_name', label: 'Simple Name' },

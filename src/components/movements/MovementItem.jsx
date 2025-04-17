@@ -68,7 +68,6 @@ export default function MovementItem({
   const [editedVideoUrl, setEditedVideoUrl] = useState('');
   const [isEditingInstructions, setIsEditingInstructions] = useState(false);
   const [editedInstructions, setEditedInstructions] = useState({});
-  const textareaRef = useRef(null);
   const notesTextareaRef = useRef(null);
 
   // Auto-resize textarea
@@ -99,16 +98,11 @@ export default function MovementItem({
     try {
       // Save to database
       await onFieldEdit(movement.id, 'notes', editedNotes);
-      // Just close edit mode, keep section expanded
       setIsEditingNotes(false);
     } catch (error) {
       console.error('Error saving notes:', error);
-      // Keep the edit mode open if there's an error
-      return;
     }
   };
-
-  const [copied, setCopied] = useState(false);
 
   const handleCopyInstructions = () => {
     const textToCopy = `
@@ -384,13 +378,14 @@ ${movement.progressions ? movement.progressions.replace(/\.$/, '').split('.').ma
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
               {[
-                { label: 'Purpose', field: 'purpose', colSpan: '1' },
-                { label: 'Influences', field: 'influences' },
-                { label: 'Difficulty', field: 'difficulty' },
-                { label: 'Skill Demands', field: 'skill_demands' },
-                { label: 'Execution Requirements', field: 'execution_requirements', colSpan: '1' }
+                { label: 'Purpose', field: 'purpose', colSpan: '4' },
+                { label: 'Movement Type', field: 'movement_type', colSpan: '1' },
+                { label: 'Difficulty', field: 'difficulty', colSpan: '1' },
+                { label: 'Skill Demands', field: 'skill_demands', colSpan: '1' },
+                { label: 'Influences', field: 'influences', colSpan: '1' },
+                { label: 'Execution Requirements', field: 'execution_requirements', colSpan: '4' }
               ].map(({ label, field, colSpan = 'auto' }) => (
-                <div key={field} className={`bg-zinc-800/40 hover:bg-zinc-800/80 border border-zinc-700 rounded-md p-3 transition-colors duration-200 ${colSpan === '1' ? 'col-span-3' : ''}`}>
+                <div key={field} className={`bg-zinc-800/40 hover:bg-zinc-800/80 border border-zinc-700 rounded-md p-3 transition-colors duration-200 ${colSpan === '4' ? 'col-span-4' : colSpan === '1' ? 'col-span-1' : ''}`}>
                   <div className="flex flex-col gap-1">
                     <span className="text-orange-300 font-semibold">{label}</span>
                     {isEditingInfo ? (
