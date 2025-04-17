@@ -17,8 +17,8 @@ const INITIAL_MOVEMENT = {
   progressions: '',
   plane: '',
   chain_type: '',
-  movement_position: '',
   movement_type: '',
+  stance: '',
   movement_types: '',
   region: '',
   joints: '',
@@ -113,7 +113,7 @@ export default function DIMDashboard() {
       
       if (error) throw error;
       
-      setNewMovement(INITIAL_DRILL);
+      setNewMovement(INITIAL_MOVEMENT);
       setTextBlock('');
       
       showSuccessToast('Movement added successfully');
@@ -137,7 +137,7 @@ export default function DIMDashboard() {
     
     try {
       const lines = textBlock.split('\n');
-      const parsedMovement = { ...INITIAL_DRILL };
+      const parsedMovement = { ...INITIAL_MOVEMENT };
       
       lines.forEach(line => {
         if (!line.trim()) return;
@@ -240,7 +240,7 @@ export default function DIMDashboard() {
               </div>
 
               <div className="bg-zinc-800 rounded-lg p-4 border border-white/10 hover:bg-zinc-700 transition-colors duration-200">
-                <label className="text-lg font-semibold mb-2 block">Movement Type</label>
+                <label className="text-lg font-semibold mb-2 block">Movement Type *</label>
                 <div className="relative w-full">
                   <textarea
                     name="movement_type"
@@ -261,6 +261,8 @@ export default function DIMDashboard() {
                   />
                 </div>
               </div>
+
+
 
               <div className="bg-zinc-800 rounded-lg p-4 border border-white/10 hover:bg-zinc-700 transition-colors duration-200">
                 <label className="text-lg font-semibold mb-2 block">Purpose</label>
@@ -452,17 +454,40 @@ export default function DIMDashboard() {
               </div>
 
               <div className="bg-zinc-800 rounded-lg p-4 border border-white/10 hover:bg-zinc-700 transition-colors duration-200">
-                <label className="text-lg font-semibold mb-2 block">Movement Position</label>
+                <label className="text-lg font-semibold mb-2 block">Stance</label>
                 <div className="relative w-full">
                   <textarea
-                    name="movement_position"
-                    value={newMovement.movement_position}
+                    name="stance"
+                    value={newMovement.stance}
                     onChange={(e) => {
                       handleInputChange(e);
                       expandTextArea(e.target);
                     }}
                     className="w-full bg-zinc-700 text-white rounded-lg p-2 text-gray-300 border border-white/10"
-                    placeholder="Enter the movement position"
+                    placeholder="Enter the stance"
+                    style={{
+                      minHeight: '4rem',
+                      lineHeight: '1.5',
+                      resize: 'none',
+                      overflow: 'auto'
+                    }}
+                    autoComplete="off"
+                  />
+                </div>
+              </div>
+
+              <div className="bg-zinc-800 rounded-lg p-4 border border-white/10 hover:bg-zinc-700 transition-colors duration-200">
+                <label className="text-lg font-semibold mb-2 block">Movement Types</label>
+                <div className="relative w-full">
+                  <textarea
+                    name="movement_types"
+                    value={newMovement.movement_types}
+                    onChange={(e) => {
+                      handleInputChange(e);
+                      expandTextArea(e.target);
+                    }}
+                    className="w-full bg-zinc-700 text-white rounded-lg p-2 text-gray-300 border border-white/10"
+                    placeholder="Enter the movement types"
                     style={{
                       minHeight: '4rem',
                       lineHeight: '1.5',

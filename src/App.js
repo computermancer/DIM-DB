@@ -52,7 +52,7 @@ function Home() {
         </Link>
       </div>
     </div>
-  );
+  )
 }
 
 export default function App() {
@@ -85,5 +85,5 @@ export default function App() {
         </div>
       </div>
     </Router>
-  );
+  )
 }
