@@ -1,8 +1,7 @@
 // DIM Dashboard - React + Tailwind + Supabase Starter (Now with Router + Layout Navigation)
 
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
-import { BrowserRouter as Router, Routes, Route, Link, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, Outlet, Link } from 'react-router-dom';
 import DIMDashboard from './components/dashboard/DIM-Dashboard';
 import { MovementArchiveAll } from './components/movements/MovementArchiveAll';
 import { MovementDetails } from './components/movements/MovementDetails';
@@ -108,10 +107,6 @@ const router = createBrowserRouter([
       {
         path: '/scenarios',
         element: <Scenarios />
-      },
-      {
-        path: '/movement/:id',
-        element: <MovementDetailsSimple />
       }
     ]
   }

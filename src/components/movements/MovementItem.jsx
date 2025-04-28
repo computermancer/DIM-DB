@@ -14,6 +14,7 @@ export default function MovementItem({
   isPortrait
 }) {
   const [expandedSections, setExpandedSections] = useState(new Set());
+  const [isVideoExpanded, setIsVideoExpanded] = useState(false);
   
   // Preserve expanded state across re-renders
   useEffect(() => {
@@ -286,45 +287,70 @@ ${movement.progressions ? movement.progressions.replace(/\.$/, '').split('.').ma
       <div className="flex flex-wrap gap-2 mb-4">
         <button
           onClick={() => toggleSection('info')}
-          className={`touch-target px-3 py-1 rounded-md text-sm ${
+          className={`touch-target px-3 py-1 rounded text-sm ${
             expandedSections.has('info') 
-              ? 'bg-blue-800 text-white' 
-              : 'bg-zinc-700 hover:bg-zinc-600 text-white'
+              ? 'bg-orange-500 text-white' 
+              : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
           }`}
         >
-          Information
+          Info
         </button>
         <button
           onClick={() => toggleSection('mechanics')}
-          className={`touch-target px-3 py-1 rounded-md text-sm ${
+          className={`touch-target px-3 py-1 rounded text-sm ${
             expandedSections.has('mechanics') 
-              ? 'bg-green-800 text-white' 
-              : 'bg-zinc-700 hover:bg-zinc-600 text-white'
+              ? 'bg-orange-500 text-white' 
+              : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
           }`}
         >
           Mechanics
         </button>
         <button
           onClick={() => toggleSection('instructions')}
-          className={`touch-target px-3 py-1 rounded-md text-sm ${
+          className={`touch-target px-3 py-1 rounded text-sm ${
             expandedSections.has('instructions') 
-              ? 'bg-purple-800 text-white' 
-              : 'bg-zinc-700 hover:bg-zinc-600 text-white'
+              ? 'bg-orange-500 text-white' 
+              : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
           }`}
         >
           Instructions
         </button>
         <button
           onClick={() => toggleSection('notes')}
-          className={`touch-target px-3 py-1 rounded-md text-sm ${
+          className={`touch-target px-3 py-1 rounded text-sm ${
             expandedSections.has('notes') 
-              ? 'bg-yellow-800 text-white' 
-              : 'bg-zinc-700 hover:bg-zinc-600 text-white'
+              ? 'bg-orange-500 text-white' 
+              : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
           }`}
         >
           Notes
         </button>
+        <button
+          onClick={() => toggleSection('video')}
+          className={`touch-target px-3 py-1 rounded text-sm ${
+            expandedSections.has('video') 
+              ? 'bg-orange-500 text-white' 
+              : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
+          }`}
+        >
+          Video
+        </button>
       </div>
+
+      {/* Video Section */}
+      {expandedSections.has('video') && (
+        <div className="mb-4 p-4 bg-zinc-700 rounded-lg">
+          <div className="relative pb-[56.25%] h-0">
+            <iframe
+              className="absolute top-0 left-0 w-full h-full rounded-lg"
+              src={movement.video_url}
+              title="Movement Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
 
       <div className={`space-y-${isPortrait ? '2' : '4'}`}>
         {/* Basic Info Section */}
