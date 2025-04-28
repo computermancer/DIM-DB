@@ -10,7 +10,8 @@ export default function MovementItem({
   onStartEdit,
   onCancelEdit,
   onSaveEdit,
-  fields
+  fields,
+  isPortrait
 }) {
   const [expandedSections, setExpandedSections] = useState(new Set());
   
@@ -64,8 +65,6 @@ export default function MovementItem({
   const [editedInfo, setEditedInfo] = useState({});
   const [isEditingMechanics, setIsEditingMechanics] = useState(false);
   const [editedMechanics, setEditedMechanics] = useState({});
-  const [isEditingVideo, setIsEditingVideo] = useState(false);
-  const [editedVideoUrl, setEditedVideoUrl] = useState('');
   const [isEditingInstructions, setIsEditingInstructions] = useState(false);
   const [editedInstructions, setEditedInstructions] = useState({});
   const notesTextareaRef = useRef(null);
@@ -225,28 +224,6 @@ ${movement.progressions ? movement.progressions.replace(/\.$/, '').split('.').ma
     }));
   };
 
-  const handleStartEditVideo = () => {
-    console.log('Starting video edit');
-    setEditedVideoUrl(movement.video_url || '');
-    setIsEditingVideo(true);
-  };
-
-  const handleSaveVideo = async () => {
-    try {
-      console.log('Saving video URL:', editedVideoUrl);
-      await onFieldEdit(movement.id, 'video_url', editedVideoUrl);
-      setIsEditingVideo(false);
-    } catch (error) {
-      console.error('Failed to save video URL:', error);
-    }
-  };
-
-  const handleCancelEditVideo = () => {
-    console.log('Canceling video edit');
-    setIsEditingVideo(false);
-    setEditedVideoUrl('');
-  };
-
   const handleStartEditInstructions = () => {
     setEditedInstructions({
       equipment_requirements: movement.equipment_requirements || '',
@@ -290,90 +267,93 @@ ${movement.progressions ? movement.progressions.replace(/\.$/, '').split('.').ma
   };
 
   return (
-    <div className="bg-zinc-800 border border-zinc-700 p-4 rounded shadow relative">
+    <div className={`bg-zinc-800 rounded-lg p-${isPortrait ? '2' : '4'} shadow-md`}>
       <div className="flex justify-between items-start mb-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h3 className="text-xl font-semibold text-white">{movement.name}</h3>
-            {movement.simple_name && (
-              <span className="text-base text-zinc-400">({movement.simple_name})</span>
-            )}
-          </div>
-          <p className="text-orange-300">{movement.category}</p>
-        </div>
-        {onDelete && (
+        <h3 className={`${isPortrait ? 'text-lg' : 'text-xl'} font-semibold text-orange-400`}>
+          {movement.name}
+        </h3>
+        <div className="flex space-x-2">
           <button
-            onClick={() => onDelete(movement)}
-            className="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded text-sm"
+            onClick={() => onDelete(movement.id)}
+            className="touch-target px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
           >
-            Delete Movement
+            Delete
           </button>
-        )}
+        </div>
       </div>
 
-      {/* Horizontal buttons */}
-      <div className="flex space-x-4 mb-4">
+      {/* Horizontal buttons for section toggles */}
+      <div className="flex flex-wrap gap-2 mb-4">
         <button
           onClick={() => toggleSection('info')}
-          className={`px-4 py-2 rounded-md ${expandedSections.has('info') ? 'bg-blue-800 text-white' : 'bg-zinc-700 hover:bg-zinc-600 text-white'}`}
+          className={`touch-target px-3 py-1 rounded-md text-sm ${
+            expandedSections.has('info') 
+              ? 'bg-blue-800 text-white' 
+              : 'bg-zinc-700 hover:bg-zinc-600 text-white'
+          }`}
         >
           Information
         </button>
         <button
           onClick={() => toggleSection('mechanics')}
-          className={`px-4 py-2 rounded-md ${expandedSections.has('mechanics') ? 'bg-blue-800 text-white' : 'bg-zinc-700 hover:bg-zinc-600 text-white'}`}
+          className={`touch-target px-3 py-1 rounded-md text-sm ${
+            expandedSections.has('mechanics') 
+              ? 'bg-green-800 text-white' 
+              : 'bg-zinc-700 hover:bg-zinc-600 text-white'
+          }`}
         >
           Mechanics
         </button>
         <button
           onClick={() => toggleSection('instructions')}
-          className={`px-4 py-2 rounded-md ${expandedSections.has('instructions') ? 'bg-blue-800 text-white' : 'bg-zinc-700 hover:bg-zinc-600 text-white'}`}
+          className={`touch-target px-3 py-1 rounded-md text-sm ${
+            expandedSections.has('instructions') 
+              ? 'bg-purple-800 text-white' 
+              : 'bg-zinc-700 hover:bg-zinc-600 text-white'
+          }`}
         >
           Instructions
         </button>
         <button
-          onClick={() => toggleSection('video')}
-          className={`px-4 py-2 rounded-md ${expandedSections.has('video') ? 'bg-blue-800 text-white' : 'bg-zinc-700 hover:bg-zinc-600 text-white'}`}
-        >
-          Video
-        </button>
-        <button
           onClick={() => toggleSection('notes')}
-          className={`px-4 py-2 rounded-md ${expandedSections.has('notes') ? 'bg-blue-800 text-white' : 'bg-zinc-700 hover:bg-zinc-600 text-white'}`}
+          className={`touch-target px-3 py-1 rounded-md text-sm ${
+            expandedSections.has('notes') 
+              ? 'bg-yellow-800 text-white' 
+              : 'bg-zinc-700 hover:bg-zinc-600 text-white'
+          }`}
         >
           Notes
         </button>
       </div>
 
-      {/* Content sections */}
-      <div className="space-y-4">
-        {/* Information section */}
+      <div className={`space-y-${isPortrait ? '2' : '4'}`}>
+        {/* Basic Info Section */}
         {expandedSections.has('info') && (
-          <div className="bg-zinc-900 border border-zinc-700 p-4 rounded-md">
-            <div className="flex justify-between items-start mb-4">
-              <h4 className="text-orange-300 font-semibold">Information</h4>
-              {!isEditingInfo ? (
-                <button
-                  onClick={handleStartEditInfo}
-                  className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded text-sm"
-                >
-                  Edit Information
-                </button>
-              ) : (
-                <div className="space-x-2">
+          <div className="bg-zinc-700 rounded p-3">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className={`${isPortrait ? 'text-sm' : 'text-base'} font-medium text-blue-400`}>Basic Information</h4>
+              {isEditingInfo ? (
+                <div className="flex space-x-2">
                   <button
                     onClick={handleSaveInfo}
-                    className="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-sm"
+                    className="touch-target px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-xs"
                   >
                     Save
                   </button>
                   <button
                     onClick={handleCancelEditInfo}
-                    className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm"
+                    className="touch-target px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 text-xs"
                   >
                     Cancel
                   </button>
                 </div>
+              ) : (
+                <button
+                  onClick={handleStartEditInfo}
+                  className="touch-target px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-xs"
+                >
+                  Edit
+                </button>
               )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
@@ -415,33 +395,33 @@ ${movement.progressions ? movement.progressions.replace(/\.$/, '').split('.').ma
           </div>
         )}
 
-        {/* Mechanics section */}
+        {/* Mechanics Section */}
         {expandedSections.has('mechanics') && (
-          <div className="bg-zinc-900 border border-zinc-700 p-4 rounded-md">
-            <div className="flex justify-between items-start mb-4">
-              <h4 className="text-orange-300 font-semibold">Mechanics</h4>
-              {!isEditingMechanics ? (
-                <button
-                  onClick={handleStartEditMechanics}
-                  className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded text-sm"
-                >
-                  Edit Mechanics
-                </button>
-              ) : (
-                <div className="space-x-2">
+          <div className="bg-zinc-700 rounded p-3">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className={`${isPortrait ? 'text-sm' : 'text-base'} font-medium text-green-400`}>Mechanics</h4>
+              {isEditingMechanics ? (
+                <div className="flex space-x-2">
                   <button
                     onClick={handleSaveMechanics}
-                    className="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-sm"
+                    className="touch-target px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-xs"
                   >
                     Save
                   </button>
                   <button
                     onClick={handleCancelEditMechanics}
-                    className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm"
+                    className="touch-target px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 text-xs"
                   >
                     Cancel
                   </button>
                 </div>
+              ) : (
+                <button
+                  onClick={handleStartEditMechanics}
+                  className="touch-target px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-xs"
+                >
+                  Edit
+                </button>
               )}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
@@ -483,80 +463,39 @@ ${movement.progressions ? movement.progressions.replace(/\.$/, '').split('.').ma
           </div>
         )}
 
-        {/* Video section */}
-        {expandedSections.has('video') && (
-          <div className="bg-zinc-900 border border-zinc-700 p-4 rounded-md">
-            <div className="flex justify-between items-start mb-4">
-              <h4 className="text-orange-300 font-semibold">Video</h4>
-              <button
-                onClick={handleStartEditVideo}
-                className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1.5 rounded text-sm"
-              >
-                Edit Video URL
-              </button>
-            </div>
-            {isEditingVideo ? (
-              <div className="mb-4">
-                <input
-                  type="text"
-                  value={editedVideoUrl}
-                  onChange={(e) => setEditedVideoUrl(e.target.value)}
-                  placeholder="Enter video URL (YouTube, Vimeo, etc.)"
-                  className="w-full bg-zinc-800 border border-zinc-700 rounded px-3 py-2 text-white text-sm"
-                />
-                <div className="flex gap-2 mt-2">
-                  <button
-                    onClick={handleSaveVideo}
-                    className="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded text-sm"
-                  >
-                    Save
-                  </button>
-                  <button
-                    onClick={handleCancelEditVideo}
-                    className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1.5 rounded text-sm"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : movement.video_url ? (
-              <div className="text-white text-sm break-all">{movement.video_url}</div>
-            ) : (
-              <div className="text-zinc-400">No video available.</div>
-            )}
-          </div>
-        )}
-
-        {/* Instructions section */}
+        {/* Instructions Section */}
         {expandedSections.has('instructions') && (
-          <div className="bg-zinc-900 border border-zinc-700 p-4 rounded-md">
-            <div className="flex justify-between items-start mb-4">
-              <button
-                onClick={handleCopyInstructions}
-                className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded text-sm"
-              >
-                Copy Instructions
-              </button>
-              {!isEditingInstructions ? (
-                <button
-                  onClick={handleStartEditInstructions}
-                  className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded text-sm"
-                >
-                  Edit Instructions
-                </button>
-              ) : (
-                <div className="space-x-2">
+          <div className="bg-zinc-700 rounded p-3">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className={`${isPortrait ? 'text-sm' : 'text-base'} font-medium text-purple-400`}>Instructions</h4>
+              {isEditingInstructions ? (
+                <div className="flex space-x-2">
                   <button
                     onClick={handleSaveInstructions}
-                    className="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-sm"
+                    className="touch-target px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-xs"
                   >
                     Save
                   </button>
                   <button
                     onClick={handleCancelEditInstructions}
-                    className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm"
+                    className="touch-target px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 text-xs"
                   >
                     Cancel
+                  </button>
+                </div>
+              ) : (
+                <div className="flex space-x-2">
+                  <button
+                    onClick={handleCopyInstructions}
+                    className="touch-target px-2 py-1 bg-purple-500 text-white rounded hover:bg-purple-600 text-xs"
+                  >
+                    Copy
+                  </button>
+                  <button
+                    onClick={handleStartEditInstructions}
+                    className="touch-target px-2 py-1 bg-purple-500 text-white rounded hover:bg-purple-600 text-xs"
+                  >
+                    Edit
                   </button>
                 </div>
               )}
@@ -730,33 +669,33 @@ ${movement.progressions ? movement.progressions.replace(/\.$/, '').split('.').ma
           </div>
         )}
 
-        {/* Notes section */}
+        {/* Notes Section */}
         {expandedSections.has('notes') && (
-          <div className="bg-zinc-900 border border-zinc-700 p-4 rounded-md">
-            <div className="flex justify-between items-start mb-2">
-              <h4 className="text-orange-300 font-semibold">Notes</h4>
-              {!isEditingNotes ? (
-                <button
-                  onClick={handleStartEditNotes}
-                  className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded text-sm"
-                >
-                  Edit Notes
-                </button>
-              ) : (
-                <div className="space-x-2">
+          <div className="bg-zinc-700 rounded p-3">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className={`${isPortrait ? 'text-sm' : 'text-base'} font-medium text-yellow-400`}>Notes</h4>
+              {isEditingNotes ? (
+                <div className="flex space-x-2">
                   <button
                     onClick={handleSaveNotes}
-                    className="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-sm"
+                    className="touch-target px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-xs"
                   >
                     Save
                   </button>
                   <button
                     onClick={handleCancelEditNotes}
-                    className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm"
+                    className="touch-target px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 text-xs"
                   >
                     Cancel
                   </button>
                 </div>
+              ) : (
+                <button
+                  onClick={handleStartEditNotes}
+                  className="touch-target px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-xs"
+                >
+                  Edit
+                </button>
               )}
             </div>
             {isEditingNotes ? (

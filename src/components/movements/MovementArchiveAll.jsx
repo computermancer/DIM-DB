@@ -4,6 +4,7 @@ import MovementItem from './MovementItem';
 import ConfirmationModal from '../common/ConfirmationModal';
 import { DRILL_FIELDS } from '../../constants/movementFields';
 import { useMovementArchiveAll } from '../../hooks/useMovementArchiveAll';
+import { useMediaQuery } from '@mui/material';
 
 export function MovementArchiveAll() {
   const {
@@ -23,6 +24,8 @@ export function MovementArchiveAll() {
     setMovementToDelete
   } = useMovementArchiveAll();
 
+  const isPortrait = useMediaQuery('(orientation: portrait)');
+
   const handleDelete = (id) => {
     deleteMovement(id);
   };
@@ -30,26 +33,26 @@ export function MovementArchiveAll() {
   const handleConfirmDelete = async () => {
     try {
       await confirmDelete();
-      setMovementToDelete(null); // Reset the state after deletion
+      setMovementToDelete(null);
     } catch (error) {
       console.error('Error deleting movement:', error);
     }
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className={`container mx-auto px-4 ${isPortrait ? 'py-4' : 'py-8'}`}>
       {loading ? (
-        <div className="text-center py-8">Loading movements...</div>
+        <div className={`text-center ${isPortrait ? 'py-4' : 'py-8'} text-gray-400`}>Loading movements...</div>
       ) : movements.length === 0 ? (
-        <div className="text-center py-8 text-gray-400">No movements found. Add some movements to get started.</div>
+        <div className={`text-center ${isPortrait ? 'py-4' : 'py-8'} text-gray-400`}>No movements found. Add some movements to get started.</div>
       ) : (
-        <div className="space-y-4">
+        <div className={`space-y-${isPortrait ? '2' : '4'}`}>
           {movements.map((movement) => (
             <MovementItem
               key={movement.id}
               movement={movement}
               setMovement={(updatedMovement) => {
-                loadMovements(); // Refresh the list after update
+                loadMovements();
               }}
               editMode={editMode}
               editedMovement={editedMovement}
@@ -59,6 +62,7 @@ export function MovementArchiveAll() {
               onDelete={handleDelete}
               onFieldEdit={handleFieldEdit}
               fields={DRILL_FIELDS}
+              isPortrait={isPortrait}
             />
           ))}
         </div>
@@ -73,6 +77,7 @@ export function MovementArchiveAll() {
           onConfirm={handleConfirmDelete}
           title="Delete Movement"
           message={`Are you sure you want to delete the movement "${movementToDelete.name}"?`}
+          isPortrait={isPortrait}
         />
       )}
 

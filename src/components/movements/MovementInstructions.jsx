@@ -323,7 +323,7 @@ export function MovementInstructions() {
         </div>
       ) : (
         <div className="text-center py-8 text-gray-400">
-          <p>Select a movement from the Movement Library to view its instructions.</p>
+          <p>Select a movement from the Movement Index to view its instructions.</p>
         </div>
       )}
 

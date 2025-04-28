@@ -1,0 +1,71 @@
+/* Base styles */
+:root {
+  --content-max-width: 90vw;
+  --touch-target-size: 44px;
+}
+
+/* Responsive typography */
+html {
+  font-size: 16px;
+}
+
+@media (orientation: portrait) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Container styles */
+.container {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Touch target sizes */
+.touch-target {
+  min-height: var(--touch-target-size);
+  min-width: var(--touch-target-size);
+  padding: 0.5rem 1rem;
+}
+
+/* Responsive spacing */
+.space-responsive {
+  margin: 1rem;
+}
+
+@media (orientation: portrait) {
+  .space-responsive {
+    margin: 0.5rem;
+  }
+}
+
+/* Utility classes for orientation */
+.portrait-only {
+  display: none;
+}
+
+.landscape-only {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .portrait-only {
+    display: block;
+  }
+  
+  .landscape-only {
+    display: none;
+  }
+}
+
+@media (orientation: landscape) {
+  .portrait-only {
+    display: none;
+  }
+  
+  .landscape-only {
+    display: block;
+  }
+} 

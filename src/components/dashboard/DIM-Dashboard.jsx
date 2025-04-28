@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../config/supabase';
 import { useNavigate } from 'react-router-dom';
 import { Toast } from '../common/Toast.jsx';
+import { useMediaQuery } from '@mui/material';
 
 const INITIAL_MOVEMENT = {
   name: '',
@@ -60,6 +61,7 @@ export default function DIMDashboard() {
   const [newMovement, setNewMovement] = useState(INITIAL_MOVEMENT);
   const [textBlock, setTextBlock] = useState('');
   const navigate = useNavigate();
+  const isPortrait = useMediaQuery('(orientation: portrait)');
 
   const addMovement = async (e) => {
     e.preventDefault();
@@ -161,8 +163,8 @@ export default function DIMDashboard() {
   }, [newMovement]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-semibold text-orange-400 mb-8">Add New Movement</h2>
+    <div className={`container mx-auto px-4 ${isPortrait ? 'py-4' : 'py-8'}`}>
+      <h2 className={`${isPortrait ? 'text-xl' : 'text-2xl'} font-semibold text-orange-400 mb-4`}>Add New Movement</h2>
       
       <Toast 
         message={successMessage} 
@@ -171,19 +173,19 @@ export default function DIMDashboard() {
         type={toastType} 
       />
       
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-medium mb-2 text-blue-400">Paste Full Movement Block</h3>
+          <h3 className={`${isPortrait ? 'text-base' : 'text-lg'} font-medium mb-2 text-blue-400`}>Paste Full Movement Block</h3>
           <textarea
             value={textBlock}
             onChange={(e) => setTextBlock(e.target.value)}
             placeholder="Paste movement block here..."
-            className="w-full p-3 border border-zinc-600 rounded-lg bg-zinc-700 text-white"
-            rows={10}
+            className="w-full p-3 border border-zinc-600 rounded-lg bg-zinc-700 text-white touch-target"
+            rows={isPortrait ? 6 : 10}
           />
           <button
             onClick={parseTextBlock}
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="touch-target mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 w-full sm:w-auto"
           >
             Parse Movement Block
           </button>
@@ -192,23 +194,24 @@ export default function DIMDashboard() {
         <form onSubmit={addMovement} className="space-y-4">
           {Object.entries(INITIAL_MOVEMENT).map(([key, value]) => (
             <div key={key} className="space-y-2">
-              <label className="text-sm text-zinc-300">{key.replace(/_/g, ' ').replace(/\w+/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}</label>
+              <label className={`${isPortrait ? 'text-xs' : 'text-sm'} text-zinc-300`}>
+                {key.replace(/_/g, ' ').replace(/\w+/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
+              </label>
               <textarea
                 name={key}
                 value={newMovement[key]}
                 onChange={(e) => setNewMovement(prev => ({ ...prev, [key]: e.target.value }))}
-                className="w-full p-3 border border-zinc-600 rounded-lg bg-zinc-700 text-white"
-                rows={1}
+                className="w-full p-3 border border-zinc-600 rounded-lg bg-zinc-700 text-white touch-target"
+                rows={isPortrait ? 2 : 3}
               />
             </div>
           ))}
-          
           <button
             type="submit"
             disabled={loading}
-            className="w-full px-4 py-2 bg-orange-400 text-white rounded-lg hover:bg-orange-500 disabled:opacity-50"
+            className="touch-target w-full px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50"
           >
-            {loading ? 'Saving...' : 'Save Movement'}
+            {loading ? 'Adding...' : 'Add Movement'}
           </button>
         </form>
       </div>
