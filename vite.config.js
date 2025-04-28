@@ -8,20 +8,19 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: true,
-    cssMinify: true,
     rollupOptions: {
+      input: {
+        main: './src/index.jsx'
+      },
       output: {
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     }
   },
   server: {
     port: 3000,
-    open: true,
-    headers: {
-      'Content-Type': 'application/javascript'
-    }
+    open: true
   }
 }) 
