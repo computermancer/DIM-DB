@@ -268,7 +268,7 @@ ${movement.progressions ? movement.progressions.replace(/\.$/, '').split('.').ma
   };
 
   return (
-    <div className={`bg-zinc-800 rounded-lg p-${isPortrait ? '2' : '4'} shadow-md`}>
+    <div className={`bg-zinc-800 rounded-lg p-4 shadow-md ${isPortrait ? 'w-full' : 'w-[800px]'}`}>
       <div className="flex justify-between items-start mb-4">
         <h3 className={`${isPortrait ? 'text-lg' : 'text-xl'} font-semibold text-orange-400`}>
           {movement.name}
@@ -352,7 +352,7 @@ ${movement.progressions ? movement.progressions.replace(/\.$/, '').split('.').ma
         </div>
       )}
 
-      <div className={`space-y-${isPortrait ? '2' : '4'}`}>
+      <div className="space-y-4">
         {/* Basic Info Section */}
         {expandedSections.has('info') && (
           <div className="bg-zinc-700 rounded p-3">
