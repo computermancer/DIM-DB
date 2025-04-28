@@ -11,17 +11,17 @@ export default defineConfig({
     cssMinify: true,
     rollupOptions: {
       output: {
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name.endsWith('.css')) {
-            return 'assets/[name]-[hash].css'
-          }
-          return 'assets/[name]-[hash][extname]'
-        }
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     }
   },
   server: {
     port: 3000,
-    open: true
+    open: true,
+    headers: {
+      'Content-Type': 'application/javascript'
+    }
   }
 }) 
